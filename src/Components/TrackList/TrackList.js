@@ -6,8 +6,8 @@ class TrackList extends React.Component {
   render() {
     return(
       <div className="TrackList">
-      {/* Create an array of track components each with its own props.
-        Depending on wheether the track component is rendered in the
+      {/* Create an array of track components, each with its own props.
+        Depending on whether the track component is rendered in the
         SearchResults or the Playlist each uses different props. */}
         {this.props.tracks.map(track => <Track track={track}
             key={track.id}
