@@ -19,15 +19,19 @@ class Playlist extends React.Component {
 
   render() {
     return(
+
       <div className="Playlist">
-        {/* Use placeholder instead of defaultValue in order for the playlistName
-          1) state to be cleared
-          2) re-render to an empty value
-          after a playlist has been saved. Also, placeholder provides the desired behavior
-          when interacting with the input text field. */}
-        <input type="text" placeholder="New Playlist" value={this.props.playlistName} onChange={this.handleNameChange}/>
-        <TrackList tracks={this.props.playlistTracks} onRemove={this.props.onRemove} isRemoval={this.state.isRemoval}/>
         <a className="Playlist-save" onClick={this.props.onSave}>SAVE TO SPOTIFY</a>
+        <div className="Playlist-box">
+          
+          {/* Use placeholder instead of defaultValue in order for the playlistName
+            1) state to be cleared
+            2) re-render to an empty value
+            after a playlist has been saved. Also, placeholder provides the desired behavior
+            when interacting with the input text field. */}
+          <input type="text" placeholder="New Playlist" value={this.props.playlistName} onChange={this.handleNameChange} onKeyDown={this.props.onSave}/>
+          <TrackList tracks={this.props.playlistTracks} onRemove={this.props.onRemove} isRemoval={this.state.isRemoval}/>
+        </div>
       </div>
     );
   }

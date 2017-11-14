@@ -19,6 +19,7 @@ class App extends React.Component {
       this.updatePlaylistName = this.updatePlaylistName.bind(this);
       this.savePlaylist = this.savePlaylist.bind(this);
       this.searchSpotify = this.searchSpotify.bind(this);
+      this.recommendTracks = this.recommendTracks.bind(this);
     }
 
   addTrack(track) {
@@ -52,11 +53,12 @@ class App extends React.Component {
     this.setState({playlistName: name});
   }
 
-  savePlaylist() {
+  savePlaylist(event) {
     // If playlistTracks is not empty AND playlistName has a value other than '',
     // then use playlistTracks to create an array of Track URIs using .map().
     // and then pass the playlistName and trackUris parameters to .savePlaylist() in Spotify.
-    if (this.state.playlistTracks.length !== 0 && this.state.playlistName) {
+    if ((event.key === "Enter" || event.type === "click") &&
+    (this.state.playlistTracks.length !== 0 && this.state.playlistName)) {
       let trackUris = this.state.playlistTracks.map(trackObj => trackObj.uri);
         Spotify.savePlaylist(this.state.playlistName, trackUris);
         // Reset the playlistName and playlistTracks and re-render them both.
@@ -66,10 +68,15 @@ class App extends React.Component {
     }
   }
 
-  searchSpotify(term) {
+  searchSpotify(term, searchBy) {
     // Send the parameter to .search() in Spotify and then re-render the
     // searchResults.
-    Spotify.search(term).then(searchResults => this.setState({searchResults: searchResults}));
+    Spotify.search(term, searchBy).then(searchResults => this.setState({searchResults: searchResults}));
+  }
+
+  recommendTracks() {
+    // Call the recommend method in Spotify and then re-render the searchResults.
+    Spotify.recommend().then(searchResults => this.setState({searchResults: searchResults}));
   }
 
   render() {
@@ -82,7 +89,8 @@ class App extends React.Component {
           <div className="App-playlist">
             <SearchResults
               searchResults={this.state.searchResults}
-              onAdd={this.addTrack}/>
+              onAdd={this.addTrack}
+              onRecommend={this.recommendTracks}/>
             <Playlist
               playlistTracks={this.state.playlistTracks}
               playlistName={this.state.playlistName}
